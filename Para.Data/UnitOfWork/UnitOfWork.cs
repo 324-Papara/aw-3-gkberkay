@@ -9,11 +9,8 @@ namespace Para.Data.UnitOfWork
         private readonly ParaDbContext dbContext;
 
         public IGenericRepository<Customer> CustomerRepository { get; }
-
         public IGenericRepository<CustomerDetail> CustomerDetailRepository { get; }
-
         public IGenericRepository<CustomerAddress> CustomerAddressRepository { get; }
-
         public IGenericRepository<CustomerPhone> CustomerPhoneRepository { get; }
 
         public UnitOfWork(ParaDbContext dbContext)
@@ -24,11 +21,12 @@ namespace Para.Data.UnitOfWork
             CustomerDetailRepository = new GenericRepository<CustomerDetail>(this.dbContext);
             CustomerAddressRepository = new GenericRepository<CustomerAddress>(this.dbContext);
             CustomerPhoneRepository = new GenericRepository<CustomerPhone>(this.dbContext);
-
         }
+
         public void Dispose()
         {
         }
+
         public async Task Complete()
         {
             await dbContext.SaveChangesAsync();
@@ -36,7 +34,7 @@ namespace Para.Data.UnitOfWork
 
         public async Task CompleteWithTransaction()
         {
-            using (var dbTransaction = dbContext.Database.BeginTransaction())
+            using (var dbTransaction = await dbContext.Database.BeginTransactionAsync())
             {
                 try
                 {
@@ -45,14 +43,11 @@ namespace Para.Data.UnitOfWork
                 }
                 catch (Exception ex)
                 {
-
                     await dbTransaction.RollbackAsync();
                     Console.WriteLine(ex);
                     throw;
                 }
             }
-            await dbContext.SaveChangesAsync();
         }
-
     }
 }

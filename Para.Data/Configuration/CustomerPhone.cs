@@ -18,8 +18,6 @@ namespace Para.Data.Configuration
             builder.Property(e => e.IsDefault).IsRequired(true);
 
             builder.HasIndex(x => new { x.CountryCode, x.Phone }).IsUnique(true);
-            builder.HasIndex(x => new { x.CountryCode, x.Phone }).IsUnique(true);
-
         }
 
     }

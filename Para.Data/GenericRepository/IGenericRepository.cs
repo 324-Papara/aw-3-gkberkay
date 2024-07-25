@@ -5,11 +5,11 @@ namespace Para.Data.GenericRepository
     public interface IGenericRepository<TEntity> where TEntity : class
     {
         Task Save();
-        Task<TEntity> GetById(long Id);
-        Task<TEntity> Insert(TEntity entity);
+        Task<TEntity?> GetById(long Id);
+        Task Insert(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);
-        Task<TEntity> Delete(long Id);
+        Task Delete(long Id);
         Task<List<TEntity>> GetAll();
         Task<IQueryable<TEntity>> GetAllAsIQueryable();
         Task<IEnumerable<TEntity>> Where(Expression<Func<TEntity, bool>> conditions);

@@ -38,7 +38,7 @@
 
         public ApiResponse(bool isSuccess)
         {
-            IsSuccess = true;
+            IsSuccess = isSuccess;
             Data = default;
             Message = isSuccess ? "Success" : "Error";
         }

@@ -15,7 +15,9 @@ namespace Pa.Api.Middleware
         {
             try
             {
+                // before controller invoke
                 await next.Invoke(context);
+                // after controller invoke
             }
             catch (Exception)
             {
@@ -27,7 +29,6 @@ namespace Pa.Api.Middleware
 
             }
 
-            await next.Invoke(context);
         }
     }
 }

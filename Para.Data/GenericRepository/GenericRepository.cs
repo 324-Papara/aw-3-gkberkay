@@ -18,18 +18,17 @@ namespace Para.Data.GenericRepository
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<TEntity> GetById(long Id)
+        public async Task<TEntity?> GetById(long Id)
         {
             return await dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == Id);
         }
 
-        public async Task<TEntity> Insert(TEntity entity)
+        public async Task Insert(TEntity entity)
         {
             entity.IsActive = true;
-            entity.InsertDate = DateTime.Now;
+            entity.InsertDate = DateTime.UtcNow;
             entity.InsertUser = "System";
             await dbContext.Set<TEntity>().AddAsync(entity);
-            return entity;
         }
 
         public void Update(TEntity entity)
@@ -42,15 +41,11 @@ namespace Para.Data.GenericRepository
             dbContext.Set<TEntity>().Remove(entity);
         }
 
-        public async Task<TEntity> Delete(long Id)
+        public async Task Delete(long Id)
         {
             var entity = await dbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == Id);
             if (entity is not null)
-            {
                 dbContext.Set<TEntity>().Remove(entity);
-                await dbContext.SaveChangesAsync();
-            }
-            return entity;
         }
 
         public async Task<List<TEntity>> GetAll()

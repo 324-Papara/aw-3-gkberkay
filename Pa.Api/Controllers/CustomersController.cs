@@ -1,10 +1,9 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol;
 using Para.Base.Response;
 using Para.Business.Cqrs;
 using Para.Schema;
-using Swashbuckle.AspNetCore.Annotations; // Swagger açıklamaları için gerekli
 
 namespace Pa.Api.Controllers
 {
@@ -20,14 +19,11 @@ namespace Pa.Api.Controllers
 
         // GET: api/<Customers>
         [HttpGet]
-        [SwaggerResponse(200, "Successful operation", typeof(ApiResponse<List<CustomerResponse>>))]
-        [SwaggerResponse(400, "Bad request")]
-        [SwaggerResponse(500, "Internal server error")]
-        public async Task<ActionResult<ApiResponse<List<CustomerResponse>>>> Get()
+        public async Task<ApiResponse<List<CustomerResponse>>> Get()
         {
             var operation = new GetAllCustomerQuery();
             var result = await mediator.Send(operation);
-            return Ok(result);
+            return result;
         }
 
         // GET api/<Customers>/5

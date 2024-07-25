@@ -15,8 +15,8 @@ namespace Pa.Api.Middleware
         {
             if (context.Request.Path.StartsWithSegments("/heartbeat"))
             {
-                await context.Response.WriteAsync(JsonSerializer.Serialize("Hello world !"));
                 context.Response.StatusCode = 200;
+                await context.Response.WriteAsync(JsonSerializer.Serialize("Hello world !"));
                 return;
             }
 

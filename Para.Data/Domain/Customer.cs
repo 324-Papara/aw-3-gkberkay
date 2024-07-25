@@ -12,6 +12,8 @@ namespace Para.Data.Domain
         public string Email { get; set; }
         public int CustomerNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
+
+
         public virtual CustomerDetail CustomerDetail { get; set; }
         public virtual List<CustomerAddress> CustomerAddresses { get; set; }
         public virtual List<CustomerPhone> CustomerPhones { get; set; }

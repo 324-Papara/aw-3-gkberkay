@@ -25,15 +25,15 @@ namespace Para.Business.Command
         public async Task<ApiResponse<CustomerResponse>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
 
-            CustomerValidator validator = new CustomerValidator();
+            //CustomerValidator validator = new CustomerValidator();
             var mapped = mapper.Map<CustomerRequest, Customer>(request.Request);
             mapped.CustomerNumber = new Random().Next(1000000,9999999);
-            var result = validator.Validate(mapped);
-            if (!result.IsValid)
-            {
-                var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
-                return new ApiResponse<CustomerResponse>(string.Join(", ", errorMessages));
-            }
+            //var result = validator.Validate(mapped);
+            //if (!result.IsValid)
+            //{
+            //    var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+            //    return new ApiResponse<CustomerResponse>(string.Join(", ", errorMessages));
+            //}
             await unitOfWork.CustomerRepository.Insert(mapped);
             await unitOfWork.Complete();
 
@@ -43,20 +43,20 @@ namespace Para.Business.Command
 
         public async Task<ApiResponse> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
-            CustomerValidator validator = new CustomerValidator();
+            //CustomerValidator validator = new CustomerValidator();
             var mapped = mapper.Map<CustomerRequest, Customer>(request.Request);
             mapped.Id = request.CustomerId;
-            var result = validator.Validate(mapped);
-            if (!result.IsValid)
-            {
-                var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
-                return new ApiResponse(string.Join(", ", errorMessages));
-            }
-            var existingCustomer = unitOfWork.CustomerRepository.GetById(request.CustomerId);
-            if (existingCustomer == null)
-            {
-                return new ApiResponse("Customer not found.");
-            }
+            //var result = validator.Validate(mapped);
+            //if (!result.IsValid)
+            //{
+            //    var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+            //    return new ApiResponse(string.Join(", ", errorMessages));
+            //}
+            //var existingCustomer = unitOfWork.CustomerRepository.GetById(request.CustomerId);
+            //if (existingCustomer == null)
+            //{
+            //    return new ApiResponse("Customer not found.");
+            //}
             unitOfWork.CustomerRepository.Update(mapped);
             await unitOfWork.Complete();
             return new ApiResponse();
