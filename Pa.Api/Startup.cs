@@ -9,8 +9,6 @@ using MediatR;
 using System.Reflection;
 using Para.Business.Cqrs;
 using Pa.Api.Middleware;
-using Para.Base.Response;
-using Para.Schema;
 
 
 namespace Pa.Api;
@@ -64,8 +62,9 @@ public class Startup
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pa.Api v1"));
         }
 
-        app.UseMiddleware<HeartbeatMiddleware>();
-        app.UseMiddleware<ErrorHandlerMiddleware>();
+        app.UseMiddleware<RequestResponseLoggingMiddleware>();
+        //app.UseMiddleware<HeartbeatMiddleware>();
+        //app.UseMiddleware<ErrorHandlerMiddleware>();
 
         app.UseHttpsRedirection();
         app.UseRouting();
