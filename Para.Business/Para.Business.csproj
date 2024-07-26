@@ -17,9 +17,4 @@
 		<ProjectReference Include="..\Para.Schema\Para.Schema.csproj" />
 	</ItemGroup>
 
-
-	<ItemGroup>
-	  <Folder Include="Validation\" />
-	</ItemGroup>
-
 </Project>

@@ -7,7 +7,7 @@ namespace Para.Business.Cqrs
     public record CreateCustomerAddressCommand(CustomerAddressRequest Request) : IRequest<ApiResponse<CustomerAddressResponse>>;
     public record UpdateCustomerAddressCommand(long CustomerId, CustomerAddressRequest Request) : IRequest<ApiResponse>;
     public record DeleteCustomerAddressCommand(long CustomerId) : IRequest<ApiResponse>;
-
+    public record ValidateCustomerAddressCommand(CustomerAddressRequest CustomerAddressRequest) : IRequest<ApiResponse>;
 
     public record GetAllCustomerAddressQuery() : IRequest<ApiResponse<List<CustomerAddressResponse>>>;
     public record GetCustomerAddressByIdQuery(long CustomerId) : IRequest<ApiResponse<CustomerAddressResponse>>;

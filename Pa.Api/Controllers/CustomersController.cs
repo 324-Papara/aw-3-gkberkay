@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Para.Base.Response;
 using Para.Business.Cqrs;
@@ -27,10 +26,10 @@ namespace Pa.Api.Controllers
         }
 
         // GET api/<Customers>/5
-        [HttpGet("{id}")]
-        public async Task<ApiResponse<CustomerResponse>> Get([FromRoute] long customerId)
+        [HttpGet("{Id}")]
+        public async Task<ApiResponse<CustomerResponse>> Get([FromRoute] long Id)
         {
-            var operation = new GetCustomerByIdQuery(customerId);
+            var operation = new GetCustomerByIdQuery(Id);
             var result = await mediator.Send(operation);
             return result;
         }
@@ -39,25 +38,26 @@ namespace Pa.Api.Controllers
         [HttpPost]
         public async Task<ApiResponse<CustomerResponse>> Post([FromBody] CustomerRequest value)
         {
+            var validationOperation = new ValidateCustomerCommand(value);
             var operation = new CreateCustomerCommand(value);
             var result = await mediator.Send(operation);
             return result;
         }
 
         // PUT api/<Customers>/5
-        [HttpPut("{customerId}")]
-        public async Task<ApiResponse> Put(long customerId, [FromBody] CustomerRequest value)
+        [HttpPut("{Id}")]
+        public async Task<ApiResponse> Put(long Id, [FromBody] CustomerRequest value)
         {
-            var operation = new UpdateCustomerCommand(customerId,value);
+            var operation = new UpdateCustomerCommand(Id, value);
             var result = await mediator.Send(operation);
             return result;
         }
 
         // DELETE api/<Customers>/5
-        [HttpDelete("{customerId}")]
-        public async Task<ApiResponse> Delete(long customerId)
+        [HttpDelete("{Id}")]
+        public async Task<ApiResponse> Delete(long Id)
         {
-            var operation = new DeleteCustomerCommand(customerId);
+            var operation = new DeleteCustomerCommand(Id);
             var result = await mediator.Send(operation);
             return result;
         }

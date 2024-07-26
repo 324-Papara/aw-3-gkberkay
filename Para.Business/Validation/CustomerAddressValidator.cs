@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
 using Para.Data.Domain;
+using Para.Schema;
 
 
 namespace Para.Data.Validator
 {
-    public class CustomerAddressValidator : AbstractValidator<CustomerAddress>
+    public class CustomerAddressValidator : AbstractValidator<CustomerAddressRequest>
     {
         public CustomerAddressValidator()
         {

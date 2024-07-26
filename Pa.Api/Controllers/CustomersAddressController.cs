@@ -38,6 +38,7 @@ namespace Pa.Api.Controllers
         [HttpPost]
         public async Task<ApiResponse<CustomerAddressResponse>> Post([FromBody] CustomerAddressRequest value)
         {
+            var validationOperation = new ValidateCustomerAddressCommand(value);
             var operation = new CreateCustomerAddressCommand(value);
             var result = await mediator.Send(operation);
             return result;

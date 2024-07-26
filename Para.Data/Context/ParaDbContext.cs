@@ -12,9 +12,9 @@ namespace Para.Data.Context
         }
 
         public DbSet<Customer> Customers { get; set; }
-        //public DbSet<CustomerAddress> CustomerAddress { get; set; }
-        //public DbSet<CustomerPhone> CustomerPhone { get; set; }
-        //public DbSet<CustomerDetail> CustomerDetails { get; set; }
+        public DbSet<CustomerAddress> CustomerAddress { get; set; }
+        public DbSet<CustomerPhone> CustomerPhone { get; set; }
+        public DbSet<CustomerDetail> CustomerDetails { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

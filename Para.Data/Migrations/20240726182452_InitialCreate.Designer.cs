@@ -12,7 +12,7 @@ using Para.Data.Context;
 namespace Para.Data.Migrations
 {
     [DbContext(typeof(ParaDbContext))]
-    [Migration("20240725063007_InitialCreate")]
+    [Migration("20240726182452_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

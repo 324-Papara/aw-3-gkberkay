@@ -1,38 +1,34 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Para.Base.Response;
 using Para.Business.Cqrs;
 using Para.Data.Domain;
 using Para.Data.UnitOfWork;
-using Para.Data.Validator;
 using Para.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Para.Business.Command
 {
     public class CustomerAddressCommandHandler :
         IRequestHandler<CreateCustomerAddressCommand, ApiResponse<CustomerAddressResponse>>,
         IRequestHandler<UpdateCustomerAddressCommand, ApiResponse>,
-        IRequestHandler<DeleteCustomerAddressCommand, ApiResponse>
+        IRequestHandler<DeleteCustomerAddressCommand, ApiResponse>,
+        IRequestHandler<ValidateCustomerAddressCommand, ApiResponse>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IValidator<CustomerAddressRequest> validator;
 
-        public CustomerAddressCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public CustomerAddressCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IValidator<CustomerAddressRequest> validator)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.validator = validator;
         }
         public async Task<ApiResponse<CustomerAddressResponse>> Handle(CreateCustomerAddressCommand request, CancellationToken cancellationToken)
         {
-
-            //CustomerValidator validator = new CustomerValidator();
             var mapped = mapper.Map<CustomerAddressRequest, CustomerAddress>(request.Request);
-            //var result = validator.Validate(mapped);
-            //if (!result.IsValid)
-            //{
-            //    var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
-            //    return new ApiResponse<CustomerResponse>(string.Join(", ", errorMessages));
-            //}
             await unitOfWork.CustomerAddressRepository.Insert(mapped);
             await unitOfWork.Complete();
 
@@ -42,20 +38,8 @@ namespace Para.Business.Command
 
         public async Task<ApiResponse> Handle(UpdateCustomerAddressCommand request, CancellationToken cancellationToken)
         {
-            //CustomerValidator validator = new CustomerValidator();
             var mapped = mapper.Map<CustomerAddressRequest, CustomerAddress>(request.Request);
             mapped.Id = request.CustomerId;
-            //var result = validator.Validate(mapped);
-            //if (!result.IsValid)
-            //{
-            //    var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
-            //    return new ApiResponse(string.Join(", ", errorMessages));
-            //}
-            //var existingCustomer = unitOfWork.CustomerRepository.GetById(request.CustomerId);
-            //if (existingCustomer == null)
-            //{
-            //    return new ApiResponse("Customer not found.");
-            //}
             unitOfWork.CustomerAddressRepository.Update(mapped);
             await unitOfWork.Complete();
             return new ApiResponse();
@@ -65,6 +49,22 @@ namespace Para.Business.Command
         {
             await unitOfWork.CustomerAddressRepository.Delete(request.CustomerId);
             await unitOfWork.Complete();
+            return new ApiResponse();
+        }
+
+        public async Task<ApiResponse> Handle(ValidateCustomerAddressCommand request, CancellationToken cancellationToken)
+        {
+            var validationResult = await validator.ValidateAsync(request.CustomerAddressRequest, cancellationToken);
+
+            if (!validationResult.IsValid)
+            {
+                var errorResponse = new ApiResponse()
+                {
+                    Message = validationResult.Errors.FirstOrDefault()?.ErrorMessage
+                };
+                return errorResponse;
+            }
+
             return new ApiResponse();
         }
     }

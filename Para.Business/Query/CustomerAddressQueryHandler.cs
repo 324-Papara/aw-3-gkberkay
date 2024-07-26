@@ -25,26 +25,14 @@ namespace Para.Business.Query
         public async Task<ApiResponse<List<CustomerAddressResponse>>> Handle(GetAllCustomerAddressQuery request, CancellationToken cancellationToken)
         {
             List<CustomerAddress> entityList = await unitOfWork.CustomerAddressRepository.GetAll();
-            //if (entityList is null)
-            //{
-            //    return new ApiResponse<List<CustomerResponse>>("Customers not found.");
-            //}
-            //var mappedList = mapper.Map<List<Customer>, List<CustomerResponse>>(entityList);
-
             var mappedList = mapper.Map<List<CustomerAddressResponse>>(entityList);
-
             return new ApiResponse<List<CustomerAddressResponse>>(mappedList);
         }
 
         public async Task<ApiResponse<CustomerAddressResponse>> Handle(GetCustomerAddressByIdQuery request, CancellationToken cancellationToken)
         {
             CustomerAddress entity = await unitOfWork.CustomerAddressRepository.GetById(request.CustomerId);
-            //if (entity is null)
-            //{
-            //    return new ApiResponse<CustomerResponse>("Customer not found.");
-            //}
             var mapped = mapper.Map<CustomerAddressResponse>(entity);
-
             return new ApiResponse<CustomerAddressResponse>(mapped);
         }
 
@@ -57,16 +45,8 @@ namespace Para.Business.Query
                 p => p.ZipCode
             );
             var customer = customers.FirstOrDefault();
-
-            //if (customer is null)
-            //{
-            //    return new ApiResponse<List<CustomerResponse>>("Customer not found.");
-            //}
             var mapped = mapper.Map<CustomerAddressResponse>(customer);
-
             var mappedList = new List<CustomerAddressResponse> { mapped };
-
-            //return Ok(new ApiResponse<CustomerResponse?>(customer.FirstOrDefault()));
             return new ApiResponse<List<CustomerAddressResponse>>(mappedList);
 
         }

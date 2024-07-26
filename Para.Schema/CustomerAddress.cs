@@ -4,7 +4,7 @@ namespace Para.Schema
 {
     public class CustomerAddressRequest : BaseRequest
     {
-        public long Id { get; set; }
+        public long CustomerId { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
         public string AddressLine { get; set; }

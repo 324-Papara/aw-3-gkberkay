@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using Para.Data.Domain;
+using Para.Schema;
 
 namespace Para.Data.Validator
 {
-    public class CustomerDetailValidator : AbstractValidator<CustomerDetail>
+    public class CustomerDetailValidator : AbstractValidator<CustomerDetailRequest>
     {
         public CustomerDetailValidator()
         {
